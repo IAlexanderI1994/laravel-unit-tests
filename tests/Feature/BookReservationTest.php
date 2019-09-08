@@ -16,7 +16,7 @@ class BookReservationTest extends TestCase {
      */
     public function a_book_can_be_added_to_the_library() {
 
-       $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $response = $this->post( '/books', [
             'title'  => 'Book title',
@@ -25,6 +25,27 @@ class BookReservationTest extends TestCase {
         $response->assertOk();
 
         $this->assertCount( 1, Book::all() );
+    }
+
+    /**
+     * @test
+     */
+    public function a_title_is_required() {
+
+        //$this->withoutExceptionHandling();
+
+
+        $response = $this->post( '/books', [
+            'title'  => '',
+            'author' => 'Alex'
+        ] );
+
+
+        //var_dump( $response->content() );
+        $response->assertJsonValidationErrors( 'title' );
+        $response->assertStatus( 400 );
+
+
     }
 }
 
