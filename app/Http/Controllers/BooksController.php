@@ -11,7 +11,8 @@ class BooksController extends Controller {
     public function store( Request $request ) {
 
         $validator = Validator::make( $request->all(), [
-            'title' => 'required|string',
+            'title'  => 'required|string',
+            'author' => 'required|string'
         ] );
 
         if ( $validator->fails() ) {
@@ -21,6 +22,19 @@ class BooksController extends Controller {
         }
 
         Book::create( $validator->validated() );
+
+    }
+
+    public function update( Request $request ) {
+
+        $validator = Validator::make( $request->all(), [
+            'title'  => 'required|string',
+            'author' => 'required|string'
+        ] );
+
+        $book = Book::find( $request->book );
+
+        $book->update( $validator->validated() );
 
     }
 
