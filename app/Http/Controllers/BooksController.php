@@ -10,10 +10,7 @@ class BooksController extends Controller {
 
     public function store( Request $request ) {
 
-        $validator = Validator::make( $request->all(), [
-            'title'  => 'required|string',
-            'author' => 'required|string'
-        ] );
+        $validator = $this->validateRequest( $request );
 
         if ( $validator->fails() ) {
             return response( [
@@ -21,21 +18,29 @@ class BooksController extends Controller {
             ], 400 );
         }
 
-        Book::create( $validator->validated() );
+        Book::create( $this->validateRequest( $request )->validated() );
 
     }
 
     public function update( Request $request ) {
 
-        $validator = Validator::make( $request->all(), [
-            'title'  => 'required|string',
-            'author' => 'required|string'
-        ] );
 
         $book = Book::find( $request->book );
 
-        $book->update( $validator->validated() );
+        $book->update( $this->validateRequest( $request )->validated() );
 
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validateRequest( Request $request ): \Illuminate\Contracts\Validation\Validator {
+        return Validator::make( $request->all(), [
+            'title'  => 'required|string',
+            'author' => 'required|string'
+        ] );
     }
 
 }
