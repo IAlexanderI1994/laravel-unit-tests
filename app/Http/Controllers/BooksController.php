@@ -5,8 +5,15 @@ namespace App\Http\Controllers;
 use App\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 class BooksController extends Controller {
+
+
+    public function show( Book $book ) {
+        return response( $book );
+    }
 
     public function store( Request $request ) {
 
@@ -18,8 +25,9 @@ class BooksController extends Controller {
             ], 400 );
         }
 
-        Book::create( $this->validateRequest( $request )->validated() );
+        $newBook = Book::create( $this->validateRequest( $request )->validated() );
 
+        return response( $newBook );
     }
 
     public function update( Request $request ) {
@@ -28,6 +36,15 @@ class BooksController extends Controller {
         $book = Book::find( $request->book );
 
         $book->update( $this->validateRequest( $request )->validated() );
+
+    }
+
+
+    public function destroy( Request $request ) {
+
+        $book = Book::find( $request->book );
+
+        $book->delete();
 
     }
 

@@ -11,6 +11,11 @@
 |
 */
 
-Route::patch('/books/{book}', 'BooksController@update');
-Route::post('/books', 'BooksController@store');
+
+Route::get( '/', function () {
+    return view( 'welcome' );
+} );
+
+Route::resource( '/books', 'BooksController' );
+
 
