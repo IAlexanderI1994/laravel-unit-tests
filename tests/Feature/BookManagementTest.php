@@ -6,7 +6,7 @@ use App\Book;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BookReservationTest extends TestCase {
+class BookManagementTest extends TestCase {
 
     use RefreshDatabase;
 
@@ -108,7 +108,7 @@ class BookReservationTest extends TestCase {
 
         $book = Book::first();
 
-        $this->delete( "/books/{$book->id}");
+        $this->delete( "/books/{$book->id}" );
 
         $this->assertCount( 0, Book::all() );
 
