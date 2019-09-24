@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Author;
 use App\Book;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -111,6 +112,26 @@ class BookManagementTest extends TestCase {
         $this->delete( "/books/{$book->id}" );
 
         $this->assertCount( 0, Book::all() );
+
+
+    }
+
+    /**
+     * @test
+     */
+    public function a_new_author_is_automatically_added() {
+
+
+        $this->withoutExceptionHandling();
+        $this->post( '/books', [
+            'title'  => 'Book title',
+            'author' => 'Alex'
+        ] );
+
+        $book   = Book::first();
+        $author = Author::first();
+        $this->assertEquals( $author->id, $book->author_id );
+        $this->assertCount( 1, Author::all() );
 
 
     }
